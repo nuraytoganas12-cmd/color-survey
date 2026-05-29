@@ -326,35 +326,18 @@
           </label>
           <label class="radio-option" onclick="selectRadio('gender','other',this)">
             <input type="radio" name="gender" value="other">
-            Басқа / Другое / Other
+            Жауап беруді қаламаймын / Затрудняюсь ответить / Prefer not to say
           </label>
         </div>
       </div>
 
-      <div class="field">
-        <label>Түс көрмеушілік бар ма? / Есть ли цветовая слепота? / Are you color blind?</label>
-        <div class="radio-group" id="colorblind-group">
-          <label class="radio-option" onclick="selectRadio('colorblind','yes',this)">
-            <input type="radio" name="colorblind" value="yes">
-            Иә / Да / Yes
-          </label>
-          <label class="radio-option" onclick="selectRadio('colorblind','no',this)">
-            <input type="radio" name="colorblind" value="no">
-            Жоқ / Нет / No
-          </label>
-          <label class="radio-option" onclick="selectRadio('colorblind','unknown',this)">
-            <input type="radio" name="colorblind" value="unknown">
-            Білмеймін / Не знаю / I don't know
-          </label>
-        </div>
-      </div>
 
       <div class="field">
         <label>Келісім / Согласие / Consent</label>
         <div class="radio-group" id="consent-group">
           <label class="radio-option" onclick="selectRadio('consent','yes',this)">
             <input type="radio" name="consent" value="yes">
-            Иә, келісемін / Да, согласен(на) / Yes, I agree
+            Иә, сауалнамадағы жауаптарымды өңдеуге келісемін / Да, согласен(на) на обработку моих ответов на опрос / Yes, I agree to the processing of my survey responses
           </label>
           <label class="radio-option" onclick="selectRadio('consent','no',this)">
             <input type="radio" name="consent" value="no">
@@ -418,17 +401,11 @@
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8dUarPGeB1uuCJ00moi0DcINHTXGASz-QMyrU5rhFZn1u4KwEbw-KGLHP5XA3QRhCgA/exec";
 
-  const ALL_IMAGES = [
-    "4_red_low_medium.png","5_red_low_light.png",
-    "7_red_medium_medium.png","8_red_medium_light.png",
-    "10_red_high_medium.png","11_red_high_light.png",
-    "22_yellow_low_medium.png","23_yellow_low_light.png",
-    "25_yellow_medium_medium.png","26_yellow_medium_light.png",
-    "28_yellow_high_medium.png","29_yellow_high_light.png",
-    "31_green_low_medium.png","32_green_low_light.png",
-    "34_green_medium_medium.png","35_green_medium_light.png",
-    "37_green_high_medium.png","38_green_high_light.png"
-  ];
+  const IMAGES_BY_COLOR = {
+    red:    ["4_red_low_medium.png","5_red_low_light.png","7_red_medium_medium.png","8_red_medium_light.png","10_red_high_medium.png","11_red_high_light.png"],
+    yellow: ["22_yellow_low_medium.png","23_yellow_low_light.png","25_yellow_medium_medium.png","26_yellow_medium_light.png","28_yellow_high_medium.png","29_yellow_high_light.png"],
+    green:  ["31_green_low_medium.png","32_green_low_light.png","34_green_medium_medium.png","35_green_medium_light.png","37_green_high_medium.png","38_green_high_light.png"]
+  };
 
   // Radio state
   const radioValues = { gender: null, colorblind: null, consent: null };
@@ -449,8 +426,23 @@
   }
 
   function pickImages() {
-    return shuffle(ALL_IMAGES);
+    const red    = shuffle(IMAGES_BY_COLOR.red);
+    const yellow = shuffle(IMAGES_BY_COLOR.yellow);
+    const green  = shuffle(IMAGES_BY_COLOR.green);
+    // Interleave: red -> yellow -> green -> red -> yellow -> green ...
+    const result = [];
+    for (let i = 0; i < 6; i++) {
+      result.push(red[i], yellow[i], green[i]);
+    }
+    return result;
   }
+
+  // Preload all images so they appear instantly
+  function preloadImages() {
+    const all = [...IMAGES_BY_COLOR.red, ...IMAGES_BY_COLOR.yellow, ...IMAGES_BY_COLOR.green];
+    all.forEach(src => { const img = new Image(); img.src = src; });
+  }
+  preloadImages();
 
   let participant = {};
   let questions = [];
@@ -463,11 +455,10 @@
 
     if (!age || age < 1 || age > 120) { err.textContent = "Please enter a valid age."; return; }
     if (!radioValues.gender)     { err.textContent = "Please select your gender."; return; }
-    if (!radioValues.colorblind) { err.textContent = "Please answer the color blindness question."; return; }
     if (!radioValues.consent)    { err.textContent = "Please answer the consent question."; return; }
     if (radioValues.consent === 'no') { err.textContent = "You must agree to participate. Thank you for your time."; return; }
 
-    participant = { age, gender: radioValues.gender, color_blind: radioValues.colorblind };
+    participant = { age, gender: radioValues.gender };
     questions = pickImages();
     answers = [];
     current = 0;
