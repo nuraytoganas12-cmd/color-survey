@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Naming Survey</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --border: #e0ddd8;
+      --accent: #2d5a27;
+      --accent-light: #e8f0e7;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 48px 40px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .notice {
+      background: var(--accent-light);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--accent);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .field {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--accent);
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 14px;
+      background: var(--bg);
+    }
+
+    .radio-option:hover { border-color: var(--accent); }
+    .radio-option.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .radio-option input { display: none; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn:hover { opacity: 0.9; }
+    .btn:active { transform: scale(0.99); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Progress */
+    .progress-wrap {
+      margin-bottom: 28px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+
+    /* Color square */
+    .color-square-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 28px 0;
+    }
+
+    .color-square {
+      width: 220px;
+      height: 220px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    }
+
+    .color-instruction {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .answer-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .answer-input:focus { border-color: var(--accent); }
+    .answer-input::placeholder { color: #bbb; }
+
+    .dash-btn {
+      width: 100%;
+      padding: 11px;
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: all 0.15s;
+    }
+
+    .dash-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Done screen */
+    .done-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 28px;
+    }
+
+    .done-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    .done-text {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: #c0392b;
+      margin-top: 4px;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="logo">Color Naming Study</div>
+
+    <!-- Screen 1: Intro & Consent -->
+    <div class="screen active" id="screen-intro">
+      <h1>What is the name of this color?</h1>
+      <p class="subtitle">
+        Бұл зерттеуге қатысқаныңызға рахмет.<br>
+        Спасибо за участие в исследовании.<br>
+        Thank you for participating in this study.
+      </p>
+      <div class="notice">
+        Бұл анонимді сауалнама. Тек осы пішінде енгізген жауаптарыңыз жиналады. Есіміңіз сақталмайды.<br><br>
+        Это анонимный опрос. Собираются только ваши ответы. Ваше имя не сохраняется.<br><br>
+        This is an anonymous survey. Only your answers are collected. Your name is not stored.
+      </div>
+
+      <div class="field">
+        <label>Жас / Возраст / Age</label>
+        <input type="number" id="age" min="1" max="120" placeholder="25">
+      </div>
+
+      <div class="field">
+        <label>Жыныс / Пол / Gender</label>
+        <div class="radio-group" id="gender-group">
+          <label class="radio-option" onclick="selectRadio('gender','male',this)">
+            <input type="radio" name="gender" value="male">
+            Ер / Мужской / Male
+          </label>
+          <label class="radio-option" onclick="selectRadio('gender','female',this)">
+            <input type="radio" name="gender" value="female">
+            Әйел / Женский / Female
+          </label>
+          <label class="radio-option" onclick="selectRadio('gender','other',this)">
+            <input type="radio" name="gender" value="other">
+            Басқа / Другое / Other
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Түс көрмеушілік бар ма? / Есть ли цветовая слепота? / Are you color blind?</label>
+        <div class="radio-group" id="colorblind-group">
+          <label class="radio-option" onclick="selectRadio('colorblind','yes',this)">
+            <input type="radio" name="colorblind" value="yes">
+            Иә / Да / Yes
+          </label>
+          <label class="radio-option" onclick="selectRadio('colorblind','no',this)">
+            <input type="radio" name="colorblind" value="no">
+            Жоқ / Нет / No
+          </label>
+          <label class="radio-option" onclick="selectRadio('colorblind','unknown',this)">
+            <input type="radio" name="colorblind" value="unknown">
+            Білмеймін / Не знаю / I don't know
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Келісім / Согласие / Consent</label>
+        <div class="radio-group" id="consent-group">
+          <label class="radio-option" onclick="selectRadio('consent','yes',this)">
+            <input type="radio" name="consent" value="yes">
+            Иә, келісемін / Да, согласен(на) / Yes, I agree
+          </label>
+          <label class="radio-option" onclick="selectRadio('consent','no',this)">
+            <input type="radio" name="consent" value="no">
+            Жоқ / Нет / No
+          </label>
+        </div>
+      </div>
+
+      <div id="intro-error" class="error-msg"></div>
+      <button class="btn" onclick="startSurvey()">
+        Бастау / Начать / Start →
+      </button>
+    </div>
+
+    <!-- Screen 2: Color Questions -->
+    <div class="screen" id="screen-survey">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="progress-text">1 / 10</span>
+          <span id="progress-pct">10%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:10%"></div>
+        </div>
+      </div>
+
+      <h1 id="question-title">Түстің атын жазыңыз</h1>
+      <p style="font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:0;">Назовите цвет / Name this color</p>
+
+      <div class="color-square-wrap">
+        <div class="color-square" id="color-square"></div>
+      </div>
+
+      <p class="color-instruction">
+        Түсті бір немесе бірнеше сөзбен атауға болады. Егер жауап беру қиын болса, сызықша қойыңыз ( — ).<br>
+        Цвет можно назвать одним или несколькими словами. Если затрудняетесь — поставьте прочерк ( — ).<br>
+        You can use one or more words. If unsure, leave a dash ( — ).
+      </p>
+
+      <input class="answer-input" type="text" id="answer-input" placeholder="...">
+      <button class="dash-btn" onclick="setDash()">Білмеймін / Не знаю / I don't know  →  ( — )</button>
+      <button class="btn" id="next-btn" onclick="nextQuestion()">
+        Келесі / Далее / Next →
+      </button>
+    </div>
+
+    <!-- Screen 3: Done -->
+    <div class="screen" id="screen-done">
+      <div class="done-icon">✓</div>
+      <div class="done-title">Рахмет! Спасибо! Thank you!</div>
+      <p class="done-text">
+        Сіздің жауаптарыңыз сақталды.<br>
+        Ваши ответы сохранены.<br>
+        Your answers have been saved.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8dUarPGeB1uuCJ00moi0DcINHTXGASz-QMyrU5rhFZn1u4KwEbw-KGLHP5XA3QRhCgA/exec";
+
+  const ALL_IMAGES = {
+    red:    ["3_red_low_dark.png","4_red_low_medium.png","5_red_low_light.png","6_red_medium_dark.png","7_red_medium_medium.png","8_red_medium_light.png","9_red_high_dark.png","10_red_high_medium.png","11_red_high_light.png"],
+    yellow: ["21_yellow_low_dark.png","22_yellow_low_medium.png","23_yellow_low_light.png","24_yellow_medium_dark.png","25_yellow_medium_medium.png","26_yellow_medium_light.png","27_yellow_high_dark.png","28_yellow_high_medium.png","29_yellow_high_light.png"],
+    green:  ["30_green_low_dark.png","31_green_low_medium.png","32_green_low_light.png","33_green_medium_dark.png","34_green_medium_medium.png","35_green_medium_light.png","36_green_high_dark.png","37_green_high_medium.png","38_green_high_light.png"]
+  };
+
+  // Radio state
+  const radioValues = { gender: null, colorblind: null, consent: null };
+
+  function selectRadio(name, value, el) {
+    radioValues[name] = value;
+    document.querySelectorAll(`#${name}-group .radio-option`).forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickImages() {
+    // 3 or 4 from each color, total 10
+    const red    = shuffle(ALL_IMAGES.red).slice(0, 3);
+    const yellow = shuffle(ALL_IMAGES.yellow).slice(0, 3);
+    const green  = shuffle(ALL_IMAGES.green).slice(0, 4);
+    return shuffle([...red, ...yellow, ...green]);
+  }
+
+  let participant = {};
+  let questions = [];
+  let answers = [];
+  let current = 0;
+
+  function startSurvey() {
+    const age = document.getElementById('age').value;
+    const err = document.getElementById('intro-error');
+
+    if (!age || age < 1 || age > 120) { err.textContent = "Please enter a valid age."; return; }
+    if (!radioValues.gender)     { err.textContent = "Please select your gender."; return; }
+    if (!radioValues.colorblind) { err.textContent = "Please answer the color blindness question."; return; }
+    if (!radioValues.consent)    { err.textContent = "Please answer the consent question."; return; }
+    if (radioValues.consent === 'no') { err.textContent = "You must agree to participate. Thank you for your time."; return; }
+
+    participant = { age, gender: radioValues.gender, color_blind: radioValues.colorblind };
+    questions = pickImages();
+    answers = [];
+    current = 0;
+
+    showScreen('screen-survey');
+    showQuestion();
+  }
+
+  function showQuestion() {
+    const total = questions.length;
+    const n = current + 1;
+
+    document.getElementById('progress-text').textContent = `${n} / ${total}`;
+    document.getElementById('progress-pct').textContent = `${Math.round(n/total*100)}%`;
+    document.getElementById('progress-fill').style.width = `${n/total*100}%`;
+
+    const img = questions[current];
+    const square = document.getElementById('color-square');
+    // Load image to get color — use as background image
+    square.style.backgroundImage = `url('${img}')`;
+    square.style.backgroundSize = 'cover';
+    square.style.backgroundPosition = 'center';
+
+    document.getElementById('answer-input').value = '';
+    document.getElementById('answer-input').focus();
+  }
+
+  function setDash() {
+    document.getElementById('answer-input').value = '—';
+  }
+
+  function nextQuestion() {
+    const val = document.getElementById('answer-input').value.trim();
+    if (!val) {
+      document.getElementById('answer-input').style.borderColor = '#c0392b';
+      setTimeout(() => document.getElementById('answer-input').style.borderColor = '', 1000);
+      return;
+    }
+
+    answers.push({ image: questions[current], answer: val });
+    current++;
+
+    if (current < questions.length) {
+      showQuestion();
+    } else {
+      submitResults();
+    }
+  }
+
+  // Allow Enter key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('screen-survey').classList.contains('active')) {
+      nextQuestion();
+    }
+  });
+
+  function submitResults() {
+    showScreen('screen-done');
+
+    const payload = { ...participant };
+    answers.forEach((a, i) => {
+      payload[`color_${i+1}`]  = a.answer;
+      payload[`image_${i+1}`]  = a.image;
+    });
+    // Fill remaining slots
+    for (let i = answers.length; i < 10; i++) {
+      payload[`color_${i+1}`] = '';
+      payload[`image_${i+1}`] = '';
+    }
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(console.error);
+  }
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+</script>
+</body>
+</html>
