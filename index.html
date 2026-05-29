@@ -418,11 +418,17 @@
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8dUarPGeB1uuCJ00moi0DcINHTXGASz-QMyrU5rhFZn1u4KwEbw-KGLHP5XA3QRhCgA/exec";
 
-  const ALL_IMAGES = {
-    red:    ["3_red_low_dark.png","4_red_low_medium.png","5_red_low_light.png","6_red_medium_dark.png","7_red_medium_medium.png","8_red_medium_light.png","9_red_high_dark.png","10_red_high_medium.png","11_red_high_light.png"],
-    yellow: ["21_yellow_low_dark.png","22_yellow_low_medium.png","23_yellow_low_light.png","24_yellow_medium_dark.png","25_yellow_medium_medium.png","26_yellow_medium_light.png","27_yellow_high_dark.png","28_yellow_high_medium.png","29_yellow_high_light.png"],
-    green:  ["30_green_low_dark.png","31_green_low_medium.png","32_green_low_light.png","33_green_medium_dark.png","34_green_medium_medium.png","35_green_medium_light.png","36_green_high_dark.png","37_green_high_medium.png","38_green_high_light.png"]
-  };
+  const ALL_IMAGES = [
+    "4_red_low_medium.png","5_red_low_light.png",
+    "7_red_medium_medium.png","8_red_medium_light.png",
+    "10_red_high_medium.png","11_red_high_light.png",
+    "22_yellow_low_medium.png","23_yellow_low_light.png",
+    "25_yellow_medium_medium.png","26_yellow_medium_light.png",
+    "28_yellow_high_medium.png","29_yellow_high_light.png",
+    "31_green_low_medium.png","32_green_low_light.png",
+    "34_green_medium_medium.png","35_green_medium_light.png",
+    "37_green_high_medium.png","38_green_high_light.png"
+  ];
 
   // Radio state
   const radioValues = { gender: null, colorblind: null, consent: null };
@@ -443,11 +449,7 @@
   }
 
   function pickImages() {
-    // 3 or 4 from each color, total 10
-    const red    = shuffle(ALL_IMAGES.red).slice(0, 3);
-    const yellow = shuffle(ALL_IMAGES.yellow).slice(0, 3);
-    const green  = shuffle(ALL_IMAGES.green).slice(0, 4);
-    return shuffle([...red, ...yellow, ...green]);
+    return shuffle(ALL_IMAGES);
   }
 
   let participant = {};
@@ -531,7 +533,7 @@
       payload[`image_${i+1}`]  = a.image;
     });
     // Fill remaining slots
-    for (let i = answers.length; i < 10; i++) {
+    for (let i = answers.length; i < 18; i++) {
       payload[`color_${i+1}`] = '';
       payload[`image_${i+1}`] = '';
     }
